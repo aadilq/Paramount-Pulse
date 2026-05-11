@@ -70,7 +70,7 @@ result = sentiment("This movie was incredible!")
 
 - **Phase 1 — Project Foundation**
   - [✅] 1.1 Scaffold directory structure + docker-compose skeleton
-  - [ ] 1.2 Stand up Redis + ElasticSearch containers (health checks passing)
+  - [✅] 1.2 Stand up Redis + ElasticSearch containers (health checks passing)
   - [ ] 1.3 Bare FastAPI app running in Docker
 
 - **Phase 2 — Data Ingestion**
@@ -103,6 +103,21 @@ result = sentiment("This movie was incredible!")
   - [ ] 7.2 Live feed component
   - [ ] 7.3 Sentiment over time chart (Recharts)
   - [ ] 7.4 Filters (by release, source, date range)
+
+## Project Structure
+
+```
+paramount-sentiment-dashboard/
+├── docker.compose.yml
+├── CLAUDE.md
+├── backend/
+│   └── dockerfile
+├── frontend/
+│   └── dockerfile
+└── helpers/
+    ├── sentiment/        # HuggingFace pipeline wrapper
+    └── storage/          # ElasticSearch read/write helpers
+```
 
 ---
 

@@ -1,0 +1,40 @@
+services:
+    redis:
+        image: redis:7.2
+        container_name: my-redis
+        ports:
+          - "6379:6379"
+        volumes:
+          - redis-data:/data
+        environment:
+          - REDIS_ARGS=--requirepass ${REDIS_PASSWORD} --appendonly yes
+        restart: unless-stopped
+        healthcheck:
+          test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+    elasticsearch:
+        image: elasticsearch:8.13.0
+        container_name: my-elasticsearch
+        ports:
+          - "9200:9200"
+        volumes:
+          - es-data:/usr/share/elasticsearch/data
+        environment:
+          - discovery.type=single-node
+          - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+          - xpack.security.enabled=true
+        restart: unless-stopped
+        healthcheck: 
+          test: ["CMD-SHELL", "curl -s -u elastic:${ELASTIC_PASSWORD} http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+          interval: 20s
+          timeout: 10s
+          retries: 10
+volumes:
+    redis-data:
+        driver: local
+    es-data:
+        driver: local
+
+
