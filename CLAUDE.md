@@ -74,7 +74,7 @@ result = sentiment("This movie was incredible!")
   - [✅] 1.3 Bare FastAPI app running in Docker
 
 - **Phase 2 — Data Ingestion**
-  - [ ] 2.1 Reddit poller via PRAW (fetch posts/comments, print to console)
+  - [✅] 2.1 Reddit poller via Direct HTTP request (fetch posts/comments, print to console)
   - [ ] 2.2 YouTube poller via Data API (fetch comments/search results, print to console)
   - [ ] 2.3 Normalize both sources into a shared event schema
 
