@@ -71,7 +71,7 @@ result = sentiment("This movie was incredible!")
 - **Phase 1 — Project Foundation**
   - [✅] 1.1 Scaffold directory structure + docker-compose skeleton
   - [✅] 1.2 Stand up Redis + ElasticSearch containers (health checks passing)
-  - [ ] 1.3 Bare FastAPI app running in Docker
+  - [✅] 1.3 Bare FastAPI app running in Docker
 
 - **Phase 2 — Data Ingestion**
   - [ ] 2.1 Reddit poller via PRAW (fetch posts/comments, print to console)

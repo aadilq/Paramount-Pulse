@@ -1,4 +1,17 @@
 services:
+    fastapi:
+        build: ./backend
+        container_name: my-fastapi
+        ports:
+          - "8000:8000"
+        env_file:
+          - .env
+        restart: unless-stopped
+        depends_on:
+            redis:
+                condition: service_healthy
+            elasticsearch:
+                condition: service_healthy
     redis:
         image: redis:7.2
         container_name: my-redis
