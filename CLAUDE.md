@@ -75,7 +75,7 @@ result = sentiment("This movie was incredible!")
 
 - **Phase 2 — Data Ingestion**
   - [✅] 2.1 Reddit poller via Direct HTTP request (fetch posts/comments, print to console)
-  - [ ] 2.2 YouTube poller via Data API (fetch comments/search results, print to console)
+  - [✅] 2.2 YouTube poller via Data API (fetch comments/search results, print to console)
   - [ ] 2.3 Normalize both sources into a shared event schema
 
 - **Phase 3 — Streaming Pipeline**
