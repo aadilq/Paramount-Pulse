@@ -31,14 +31,13 @@ async def fetch_posts(query: str, subreddit: str) -> list[dict]:
         p = post["data"]
         posts.append({
             "id": p["id"],
-            "title": p["title"],
-            "text": p.get("selftext", ""),
-            "subreddit": p["subreddit"],
-            "upvotes": p["score"],
-            "url": p["url"],
-            "created_utc": p["created_utc"],
-            "source": "reddit", 
+            "source": "reddit",
             "release": query,
+            "title": p["title"],
+            "text" : p.get("selftext", "") or p["title"],
+            "author": f"r/{p['subreddit']}",
+            "url": p["url"],
+            "timestamp": datetime.fromtimestamp(p["created_utc"], tz=timezone.utc).isoformat()
         })
     return posts
 
@@ -50,7 +49,7 @@ async def poll_reddit():
             try:
                 posts = await fetch_posts(release, subreddit)
                 for post in posts:
-                    print(f"[REDDIT] {post['release']} | r/{post['subreddit']} | {post['title'][:80]}")
+                    print(f"[REDDIT] {post['release']} | {post['author']} | {post['title'][:80]}")
             except Exception as e:
                 print(f"[REDDIT ERROR] {release} / r/{subreddit}: {e}")
             await asyncio.sleep(2)

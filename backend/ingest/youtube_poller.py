@@ -27,12 +27,13 @@ def fetch_videos(query: str, api_key: str) -> list[dict]:
         snippet = item["snippet"]
         videos.append({
             "id": item["id"]["videoId"],
-            "title": snippet["title"],
-            "description": snippet.get("description", ""),
-            "channel": snippet["channelTitle"],
-            "published_at": snippet["publishedAt"],
             "source": "youtube",
             "release": query,
+            "title": snippet["title"],
+            "text": snippet.get("description", "") or snippet["title"],
+            "author": snippet["channelTitle"],
+            "url": f"https://www.youtube.com/watch?v={item['id']['videoId']}",
+            "timestamp": snippet["publishedAt"],
         })
     return videos
 
@@ -47,11 +48,11 @@ async def poll_youtube():
         try:
             videos = await asyncio.to_thread(fetch_videos, release, api_key)
             for video in videos:
-                print(f"[YOUTUBE] {video['release']} | {video['channel']} | {video['title'][:80]}")
+                print(f"[YOUTUBE] {video['release']} | {video['author']} | {video['title'][:80]}")
         except Exception as e:
             print(f"[YOUTUBE ERROR] {release}: {e}")
         await asyncio.sleep(1)
     print(f"[{datetime.now(timezone.utc)}] Youtube poll complete")
-    
+
 
 
