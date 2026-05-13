@@ -3,7 +3,10 @@ import asyncio
 from datetime import datetime, timezone
 
 
-HEADER = {"User-Agent" : "paramount-sentiment-dashboard/1.0"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Accept": "application/json",
+      "Accept-Language": "en-US,en;q=0.9",
+  }
 
 RELEASES = [
     "Mission: Impossible - The Final Reckoning",
@@ -15,10 +18,10 @@ RELEASES = [
 SUBREDDITS = ["movies", "boxoffice", "television"]
 
 async def fetch_posts(query: str, subreddit: str) -> list[dict]:
-    url = f"https://www.reddit.com/r/{subreddit}/search.json"
+    url = f"https://old.reddit.com/r/{subreddit}/search.json"
     params = {"q": query, "sort": "new", "limit": 10, "restrict_sr": "true"}
 
-    async with httpx.AsyncClient(headers=HEADER) as client:
+    async with httpx.AsyncClient(headers=HEADERS) as client:
         response = await client.get(url, params=params)
         response.raise_for_status()
         data = response.json()
@@ -50,7 +53,7 @@ async def poll_reddit():
                     print(f"[REDDIT] {post['release']} | r/{post['subreddit']} | {post['title'][:80]}")
             except Exception as e:
                 print(f"[REDDIT ERROR] {release} / r/{subreddit}: {e}")
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
     print(f"[{datetime.now(timezone.utc)}] Reddit poll complete.")
     
         
