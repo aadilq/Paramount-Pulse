@@ -81,7 +81,7 @@ result = sentiment("This movie was incredible!")
 - **Phase 3 — Streaming Pipeline**
   - [✅] 3.1 Redis Streams producer (ingest workers write events to stream)
   - [✅] 3.2 Redis Streams consumer (reads events, logs them)
-  - [ ] 3.3 Dead-letter handling for failed messages
+  - [✅] 3.3 Dead-letter handling for failed messages
 
 - **Phase 4 — Sentiment Analysis**
   - [ ] 4.1 HuggingFace pipeline wrapper (`cardiffnlp/twitter-roberta-base-sentiment`)
