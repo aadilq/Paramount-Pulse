@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime, timezone
 from googleapiclient.discovery import build
 import os
+from streams.redis_client import get_redis_client, publish_event
 
 RELEASES = [
       "Mission Impossible",
@@ -38,21 +39,27 @@ def fetch_videos(query: str, api_key: str) -> list[dict]:
     return videos
 
 async def poll_youtube():
-    api_key = os.getenv("YOUTUBE_API_KEY")
-    if not api_key:
-        print("[YOUTUBE ERROR] YOUTUBE_API_KEY not set")
-        return
-    
-    print(f"[{datetime.now(timezone.utc)}] Starting Youtube poll...")
-    for release in RELEASES:
-        try:
-            videos = await asyncio.to_thread(fetch_videos, release, api_key)
-            for video in videos:
-                print(f"[YOUTUBE] {video['release']} | {video['author']} | {video['title'][:80]}")
-        except Exception as e:
-            print(f"[YOUTUBE ERROR] {release}: {e}")
-        await asyncio.sleep(1)
-    print(f"[{datetime.now(timezone.utc)}] Youtube poll complete")
+    try:
+        api_key = os.getenv("YOUTUBE_API_KEY")
+        if not api_key:
+            print("[YOUTUBE ERROR] YOUTUBE_API_KEY not set")
+            return
+        
+        print(f"[{datetime.now(timezone.utc)}] Starting Youtube poll...")
+        client = await get_redis_client()
+        for release in RELEASES:
+            try:
+                videos = await asyncio.to_thread(fetch_videos, release, api_key)
+                for video in videos:
+                    await publish_event(client, video)
+                    print(f"[YOUTUBE] {video['release']} | {video['author']} | {video['title'][:80]}")
+            except Exception as e:
+                print(f"[YOUTUBE ERROR] {release}: {e}")
+            await asyncio.sleep(1)
+        print(f"[{datetime.now(timezone.utc)}] Youtube poll complete")
+    except Exception as e:
+        print(f"[YOUTUBE FATAL ERROR]: {e}")
+
 
 
 
