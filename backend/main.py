@@ -1,19 +1,21 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import asyncio
 from ingest.reddit_poller import poll_reddit
 from ingest.youtube_poller import poll_youtube
 
-scheduler = AsyncIOScheduler()
+async def run_poller(poll_fn, interval_seconds: int):
+    while True:
+        await poll_fn()
+        await asyncio.sleep(interval_seconds)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    scheduler.add_job(poll_reddit, "interval", minutes=15, next_run_time=datetime.now(timezone.utc))
-    scheduler.add_job(poll_youtube, "interval", minutes=15, next_run_time=datetime.now(timezone.utc))
-    scheduler.start()
+    print("[TEST] Scheduler is firing jobs!")
+    task1 = asyncio.create_task(run_poller(poll_reddit, 900))
+    task2 = asyncio.create_task(run_poller(poll_youtube, 900))
     yield
-    scheduler.shutdown()
 
 app = FastAPI(lifespan=lifespan)
 
