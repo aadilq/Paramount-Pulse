@@ -84,9 +84,9 @@ result = sentiment("This movie was incredible!")
   - [✅] 3.3 Dead-letter handling for failed messages
 
 - **Phase 4 — Sentiment Analysis**
-  - [ ] 4.1 HuggingFace pipeline wrapper (`cardiffnlp/twitter-roberta-base-sentiment`)
-  - [ ] 4.2 Consumer runs scoring and attaches label + confidence score to each event
-  - [ ] 4.3 Batch processing support for bursts of data
+  - [✅] 4.1 HuggingFace pipeline wrapper (`cardiffnlp/twitter-roberta-base-sentiment`)
+  - [✅] 4.2 Consumer runs scoring and attaches label + confidence score to each event
+  - [✅] 4.3 Batch processing support for bursts of data
 
 - **Phase 5 — Storage & Search**
   - [ ] 5.1 ElasticSearch index mappings (release, source, score, timestamp)

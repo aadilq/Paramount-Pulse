@@ -1,7 +1,9 @@
 import asyncio
 import json
+import traceback
 import redis.asyncio as aioredis
 from streams.redis_client import get_redis_client, STREAM_NAME
+from sentiment.analyzer import analyze_batch
 
 GROUP_NAME = "sentiment-workers"
 CONSUMER_NAME = "consumer-1"
@@ -51,15 +53,23 @@ async def consume_events():
 
             if results:
                 for stream, messages in results:
+                    batch = []
                     for message_id, data in messages:
                         event = json.loads(data["data"])
-                        print(f"[CONSUMER] {event['source']} | {event['release']} | {event['title'][:60]}")
+                        batch.append((message_id, event))
+                    texts = [event["text"] for _, event in batch]
+                    sentiments = await asyncio.to_thread(analyze_batch, texts)
+                    for (message_id, event), sentiment in zip(batch, sentiments):
+                        event["sentiment"] = sentiment["label"]
+                        event["sentiment_score"] = sentiment["score"]
+                        print(f"[SENTIMENT] {event['source']} | {event['release']} | {sentiment['label']} ({sentiment['score']}) | {event['title'][:50]}")
                         await client.xack(STREAM_NAME, GROUP_NAME, message_id)
             iteration += 1
             if iteration % 20 == 0:
                 await check_dead_letters(client)
         except Exception as e:
             print(f"[CONSUMER ERROR]: {e}")
+            traceback.print_exc()
             await asyncio.sleep(2)
 
 

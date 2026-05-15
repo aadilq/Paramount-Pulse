@@ -15,7 +15,7 @@ async def run_poller(poll_fn, interval_seconds: int):
 async def lifespan(app: FastAPI):
     print("[TEST] Scheduler is firing jobs!")
     task1 = asyncio.create_task(run_poller(poll_reddit, 900))
-    task2 = asyncio.create_task(run_poller(poll_youtube, 900))
+    task2 = asyncio.create_task(run_poller(poll_youtube, 7200))
     task3 = asyncio.create_task(consume_events())
     yield
     task1.cancel()

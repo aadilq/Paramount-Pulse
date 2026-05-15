@@ -4,4 +4,3 @@ httpx
 google-api-python-client
 redis
 transformers
-torch
