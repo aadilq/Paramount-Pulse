@@ -96,7 +96,7 @@ result = sentiment("This movie was incredible!")
 - **Phase 6 — Real-Time Backend**
   - [✅] 6.1 WebSocket endpoint in FastAPI
   - [✅] 6.2 Broadcast live events to connected clients
-  - [ ] 6.3 REST endpoints for historical data queries (charts, aggregates)
+  - [✅] 6.3 REST endpoints for historical data queries (charts, aggregates)
 
 - **Phase 7 — React Dashboard**
   - [ ] 7.1 Project setup + `useWebSocket` hook
