@@ -89,7 +89,7 @@ result = sentiment("This movie was incredible!")
   - [✅] 4.3 Batch processing support for bursts of data
 
 - **Phase 5 — Storage & Search**
-  - [ ] 5.1 ElasticSearch index mappings (release, source, score, timestamp)
+  - [✅] 5.1 ElasticSearch index mappings (release, source, score, timestamp)
   - [ ] 5.2 Write scored events to ES from consumer
   - [ ] 5.3 Query helpers (by release title, by source, by time range)
 

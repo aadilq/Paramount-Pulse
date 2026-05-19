@@ -9,9 +9,8 @@ def get_es_client() -> AsyncElasticsearch:
     global _client
     if _client is None:
         _client = AsyncElasticsearch(
-            hosts=[f"https://localhost:9200"],
+            hosts=["http://elasticsearch:9200"],
             basic_auth=("elastic", os.getenv("ELASTIC_PASSWORD")),
-            verify_certs=False,
         )
     return _client
 
@@ -36,4 +35,10 @@ async def create_index(client: AsyncElasticsearch):
         print(f"[ES] Created index '{INDEX_NAME}'")
     else:
         print(f"[ES] Index '{INDEX_NAME}' already exists")
+
+async def index_event(client: AsyncElasticsearch, event: dict):
+    await client.index(index=INDEX_NAME, id=event["id"], document=event)
+
+
+
 

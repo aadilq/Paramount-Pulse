@@ -4,6 +4,7 @@ import traceback
 import redis.asyncio as aioredis
 from streams.redis_client import get_redis_client, STREAM_NAME
 from sentiment.analyzer import analyze_batch
+from storage.elastic_client import get_es_client, create_index, index_event
 
 GROUP_NAME = "sentiment-workers"
 CONSUMER_NAME = "consumer-1"
@@ -45,6 +46,16 @@ async def consume_events():
     client = await get_redis_client()
     await create_consumer_group(client)
 
+    try:
+        es = get_es_client()
+        info = await es.info()
+        print(f"[ES] Connected to cluster: {info['cluster_name']}")
+        await create_index(es)
+    except Exception as e:
+        print(f"[CONSUMER] ElasticSearch init failed: {e}")
+        traceback.print_exc()
+        es = None
+
     print(f"[CONSUMER] Listening on stream '{STREAM_NAME}'...")
     iteration = 0
     while True:
@@ -63,6 +74,8 @@ async def consume_events():
                         event["sentiment"] = sentiment["label"]
                         event["sentiment_score"] = sentiment["score"]
                         print(f"[SENTIMENT] {event['source']} | {event['release']} | {sentiment['label']} ({sentiment['score']}) | {event['title'][:50]}")
+                        if es:
+                            await index_event(es, event)
                         await client.xack(STREAM_NAME, GROUP_NAME, message_id)
             iteration += 1
             if iteration % 20 == 0:
