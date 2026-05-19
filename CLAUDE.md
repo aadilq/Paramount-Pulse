@@ -94,7 +94,7 @@ result = sentiment("This movie was incredible!")
   - [✅] 5.3 Query helpers (by release title, by source, by time range)
 
 - **Phase 6 — Real-Time Backend**
-  - [ ] 6.1 WebSocket endpoint in FastAPI
+  - [✅] 6.1 WebSocket endpoint in FastAPI
   - [ ] 6.2 Broadcast live events to connected clients
   - [ ] 6.3 REST endpoints for historical data queries (charts, aggregates)
 
