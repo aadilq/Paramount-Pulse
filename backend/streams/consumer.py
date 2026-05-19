@@ -5,6 +5,7 @@ import redis.asyncio as aioredis
 from streams.redis_client import get_redis_client, STREAM_NAME
 from sentiment.analyzer import analyze_batch
 from storage.elastic_client import get_es_client, create_index, index_event
+from websocket.manager import manager
 
 GROUP_NAME = "sentiment-workers"
 CONSUMER_NAME = "consumer-1"
@@ -76,6 +77,7 @@ async def consume_events():
                         print(f"[SENTIMENT] {event['source']} | {event['release']} | {sentiment['label']} ({sentiment['score']}) | {event['title'][:50]}")
                         if es:
                             await index_event(es, event)
+                        await manager.broadcast(event)
                         await client.xack(STREAM_NAME, GROUP_NAME, message_id)
             iteration += 1
             if iteration % 20 == 0:
