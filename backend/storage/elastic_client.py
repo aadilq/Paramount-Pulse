@@ -42,3 +42,21 @@ async def index_event(client: AsyncElasticsearch, event: dict):
 
 
 
+async def query_by_release(client: AsyncElasticsearch, release: str, size: int = 50) -> list:
+    response = await client.search(index=INDEX_NAME, query={
+        "match": {"release": release}
+    }, size=size, sort=[{"timestamp": "desc"}])
+    return [hit["_source"] for hit in response["hits"]["hits"]]
+
+async def query_by_source(client: AsyncElasticsearch, source: str, size: int = 50) -> list:
+    response = await client.search(index=INDEX_NAME, query={
+        "term": {"source": source}
+    }, size=size, sort=[{"timestamp": "desc"}])
+    return [hit["_source"] for hit in response["hits"]["hits"]]
+
+
+async def query_by_time_range(client: AsyncElasticsearch, gte: str, lte: str = "now", size: int = 50) -> list:
+    response = await client.search(index=INDEX_NAME, query={
+        "range": {"timestamp": {"gte": gte, "lte": lte}}
+    }, size=size, sort=[{"timestamp": "desc"}])
+    return [hit["_source"] for hit in response["hits"]["hits"]]
