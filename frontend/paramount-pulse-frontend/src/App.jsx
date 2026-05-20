@@ -1,5 +1,5 @@
 import { useWebSocket } from "./hooks/useWebSocket"
-import LiveFeed from "./components/LiveFeed"
+import Dashboard from "./components/Dashboard"
 
 function App() {
   const { events, connected } = useWebSocket('ws://localhost:8000/ws')
@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <p>Status: {connected ? 'Connected' : 'Disconnected'}</p>
-      <LiveFeed events={events} />
+      <Dashboard events={events} />
     </div>
   )
 }
