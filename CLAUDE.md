@@ -101,7 +101,7 @@ result = sentiment("This movie was incredible!")
 - **Phase 7 — React Dashboard**
   - [✅] 7.1 Project setup + `useWebSocket` hook
   - [✅] 7.2 Live feed component
-  - [ ] 7.3 Sentiment over time chart (Recharts)
+  - [✅] 7.3 Sentiment over time chart (Recharts)
   - [ ] 7.4 Filters (by release, source, date range)
 
 ## Project Structure
