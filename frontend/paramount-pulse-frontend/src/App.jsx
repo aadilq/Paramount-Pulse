@@ -1,8 +1,20 @@
+import { useEffect, useState } from "react"
 import { useWebSocket } from "./hooks/useWebSocket"
 import Dashboard from "./components/Dashboard"
 
+const FULL_TITLE = "Paramount Pulse"
+
 function App() {
   const { events, connected } = useWebSocket('ws://localhost:8000/ws')
+  const [displayed, setDisplayed] = useState("")
+
+  useEffect(() => {
+    if (displayed.length >= FULL_TITLE.length) return
+    const timeout = setTimeout(() => {
+      setDisplayed(FULL_TITLE.slice(0, displayed.length + 1))
+    }, 100)
+    return () => clearTimeout(timeout)
+  }, [displayed])
 
   return (
     <div style={{ background: '#1A1F37', minHeight: '100vh' }}>
@@ -24,7 +36,7 @@ function App() {
           textTransform: 'uppercase',
           marginBottom: '32px',
         }}>
-          Paramount Pulse
+          {displayed}
         </h1>
         <p style={{
           fontFamily: "'Space Mono', monospace",

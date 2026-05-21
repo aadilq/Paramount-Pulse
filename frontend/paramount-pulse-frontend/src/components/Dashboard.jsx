@@ -44,12 +44,34 @@ function Dashboard({ events, connected }) {
     const [release, setRelease] = useState(RELEASES[0])
     const [source, setSource] = useState("")
     const [gte, setGte] = useState("now-7d")
+    const [historicalEvents, setHistoricalEvents] = useState([])
 
-    const filteredEvents = events.filter(e => {
+    useEffect(() => {
+        let cancelled = false
+        const params = new URLSearchParams({ size: "100" })
+        if (release) params.set("release", release)
+        if (source) params.set("source", source)
+        if (gte) params.set("gte", gte)
+
+        fetch(`http://localhost:8000/events?${params}`)
+            .then(res => res.json())
+            .then(data => { if (!cancelled) setHistoricalEvents(data) })
+            .catch(err => console.error("[EVENTS] Error:", err))
+
+        return () => { cancelled = true }
+    }, [release, source, gte])
+
+    const liveFiltered = events.filter(e => {
         if (e.release !== release) return false
         if (source && e.source !== source) return false
         return true
     })
+
+    const seenIds = new Set(liveFiltered.map(e => e.id))
+    const feedEvents = [
+        ...liveFiltered,
+        ...historicalEvents.filter(e => !seenIds.has(e.id)),
+    ]
 
     return (
         <div>
@@ -96,7 +118,7 @@ function Dashboard({ events, connected }) {
 
             <div>
                 <p style={sectionHeader}>// live feed</p>
-                <LiveFeed events={filteredEvents} />
+                <LiveFeed events={feedEvents} />
             </div>
         </div>
     )
