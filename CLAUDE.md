@@ -81,7 +81,6 @@ result = sentiment("This movie was incredible!")
 - **Phase 3 — Streaming Pipeline**
   - [✅] 3.1 Redis Streams producer (ingest workers write events to stream)
   - [✅] 3.2 Redis Streams consumer (reads events, logs them)
-  - [✅] 3.3 Dead-letter handling for failed messages
 
 - **Phase 4 — Sentiment Analysis**
   - [✅] 4.1 HuggingFace pipeline wrapper (`cardiffnlp/twitter-roberta-base-sentiment`)
@@ -101,8 +100,20 @@ result = sentiment("This movie was incredible!")
 - **Phase 7 — React Dashboard**
   - [✅] 7.1 Project setup + `useWebSocket` hook
   - [✅] 7.2 Live feed component
-  - [✅] 7.3 Sentiment over time chart (Recharts)
+  - [✅] 7.3 Sentiment bars (ASCII-style, color-coded by sentiment)
   - [✅] 7.4 Filters (by release, source, date range)
+  - [✅] 7.5 Figma design applied (dark navy, Abel + Space Mono fonts, typewriter hero)
+
+- **Phase 8 — Deployment**
+  - [ ] 8.1 Purchase domain (`paramountpulse.fyi`) and configure DNS
+  - [ ] 8.2 Provision DigitalOcean Droplet (Ubuntu, 2GB RAM minimum for ElasticSearch)
+  - [ ] 8.3 Install Docker + Docker Compose on Droplet, copy project files via git
+  - [ ] 8.4 Run `docker-compose up -d` on server, verify all containers healthy
+  - [ ] 8.5 Install Nginx + configure reverse proxy (`api.paramountpulse.fyi` → port 8000)
+  - [ ] 8.6 SSL certificate via Certbot / Let's Encrypt for `api.paramountpulse.fyi`
+  - [ ] 8.7 Update frontend API URLs from `localhost:8000` to `api.paramountpulse.fyi`
+  - [ ] 8.8 Build React app (`npm run build`) and deploy to GitHub Pages at `paramountpulse.fyi`
+  - [ ] 8.9 Update CORS on FastAPI to allow `paramountpulse.fyi`
 
 ## Project Structure
 
