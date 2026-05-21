@@ -42,6 +42,10 @@ def read_index():
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
     try:
+        es = get_es_client()
+        recent = await query_by_time_range(es, "now-7d", size=50)
+        for event in reversed(recent):
+            await websocket.send_json(event)
         while True:
             await websocket.receive_text()
     except WebSocketDisconnect:
@@ -59,9 +63,16 @@ async def get_events(release: str = None, source: str = None, gte: str = None, s
     return await query_by_time_range(es, "now-7d", size=size)
 
 @app.get("/events/aggregates")
-async def get_aggregates(release: str = None):
+async def get_aggregates(release: str = None, source: str = None, gte: str = None):
     es = get_es_client()
-    query = {"match": {"release": release}} if release else {"match_all": {}}
+    must = []
+    if release:
+        must.append({"match": {"release": release}})
+    if source:
+        must.append({"term": {"source": source}})
+    if gte:
+        must.append({"range": {"timestamp": {"gte": gte}}})
+    query = {"bool": {"must": must}} if must else {"match_all": {}}
     response = await es.search(index="paramount_events", query=query, size=0, aggs={
         "by_sentiment": {"terms": {"field": "sentiment"}}
     })

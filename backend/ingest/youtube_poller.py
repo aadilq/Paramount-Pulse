@@ -5,7 +5,7 @@ import os
 from streams.redis_client import get_redis_client, publish_event
 
 RELEASES = [
-      "Mission Impossible",
+      "Mission: Impossible - The Final Reckoning",
       "Sonic the Hedgehog",
       "Transformers One",
       "Top Gun Maverick",
