@@ -11,9 +11,15 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 RELEASES = [
     "Mission: Impossible - The Final Reckoning",
-    "Sonic the Hedgehog",
+    "Street Fighter",
+    "Dutton Ranch",
     "Transformers One",
     "Top Gun Maverick",
+    "Landman",
+    "Gladiator II",
+    "The Madison"
+    "Roofman",
+    "The Running Man"
 ]
 
 SUBREDDITS = ["movies", "boxoffice", "television"]
