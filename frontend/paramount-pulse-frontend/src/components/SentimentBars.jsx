@@ -29,7 +29,7 @@ function SentimentBars({ release, source, gte }) {
         if (source) params.set("source", source)
         if (gte) params.set("gte", gte)
 
-        fetch(`http://localhost:8000/events/aggregates?${params}`)
+        fetch(`https://api.paramountpulse.fyi/events/aggregates?${params}`)
             .then(res => res.json())
             .then(data => { if (!cancelled) setCounts(data) })
             .catch(err => console.error("[AGGREGATES] Error:", err))

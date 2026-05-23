@@ -105,13 +105,13 @@ result = sentiment("This movie was incredible!")
   - [✅] 7.5 Figma design applied (dark navy, Abel + Space Mono fonts, typewriter hero)
 
 - **Phase 8 — Deployment**
-  - [ ] 8.1 Purchase domain (`paramountpulse.fyi`) and configure DNS
-  - [ ] 8.2 Provision DigitalOcean Droplet (Ubuntu, 2GB RAM minimum for ElasticSearch)
-  - [ ] 8.3 Install Docker + Docker Compose on Droplet, copy project files via git
-  - [ ] 8.4 Run `docker-compose up -d` on server, verify all containers healthy
-  - [ ] 8.5 Install Nginx + configure reverse proxy (`api.paramountpulse.fyi` → port 8000)
-  - [ ] 8.6 SSL certificate via Certbot / Let's Encrypt for `api.paramountpulse.fyi`
-  - [ ] 8.7 Update frontend API URLs from `localhost:8000` to `api.paramountpulse.fyi`
+  - [✅] 8.1 Purchase domain (`paramountpulse.fyi`) and configure DNS
+  - [✅] 8.2 Provision Hetzner (Ubuntu, 2GB RAM minimum for ElasticSearch)
+  - [✅] 8.3 Install Docker + Docker Compose on Hetzner, copy project files via git
+  - [✅] 8.4 Run `docker-compose up -d` on server, verify all containers healthy
+  - [✅] 8.5 Install Nginx + configure reverse proxy (`api.paramountpulse.fyi` → port 8000)
+  - [✅] 8.6 SSL certificate via Certbot / Let's Encrypt for `api.paramountpulse.fyi`
+  - [✅] 8.7 Update frontend API URLs from `localhost:8000` to `api.paramountpulse.fyi`
   - [ ] 8.8 Build React app (`npm run build`) and deploy to GitHub Pages at `paramountpulse.fyi`
   - [ ] 8.9 Update CORS on FastAPI to allow `paramountpulse.fyi`
 

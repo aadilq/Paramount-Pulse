@@ -17,7 +17,7 @@ RELEASES = [
     "Top Gun Maverick",
     "Landman",
     "Gladiator II",
-    "The Madison"
+    "The Madison",
     "Roofman",
     "The Running Man"
 ]

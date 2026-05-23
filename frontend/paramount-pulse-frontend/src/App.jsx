@@ -5,7 +5,7 @@ import Dashboard from "./components/Dashboard"
 const FULL_TITLE = "Paramount Pulse"
 
 function App() {
-  const { events, connected } = useWebSocket('ws://localhost:8000/ws')
+  const { events, connected } = useWebSocket('wss://api.paramountpulse.fyi/ws')
   const [displayed, setDisplayed] = useState("")
 
   useEffect(() => {

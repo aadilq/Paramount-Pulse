@@ -4,9 +4,15 @@ import LiveFeed from "./LiveFeed"
 
 const RELEASES = [
     "Mission: Impossible - The Final Reckoning",
-    "Sonic the Hedgehog",
+    "Street Fighter",
+    "Dutton Ranch",
     "Transformers One",
     "Top Gun Maverick",
+    "Landman",
+    "Gladiator II",
+    "The Madison",
+    "Roofman",
+    "The Running Man",
 ]
 
 const SOURCES = [
@@ -53,7 +59,7 @@ function Dashboard({ events, connected }) {
         if (source) params.set("source", source)
         if (gte) params.set("gte", gte)
 
-        fetch(`http://localhost:8000/events?${params}`)
+        fetch(`https://api.paramountpulse.fyi/events?${params}`)
             .then(res => res.json())
             .then(data => { if (!cancelled) setHistoricalEvents(data) })
             .catch(err => console.error("[EVENTS] Error:", err))
