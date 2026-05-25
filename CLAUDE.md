@@ -1,6 +1,6 @@
 # Real-Time Audience Sentiment Dashboard
 
-A live social listening tool that aggregates mentions, reviews, and reactions from Reddit and YouTube around Paramount releases, processes them through sentiment analysis, and displays results on a live React dashboard.
+A live social listening tool that aggregates mentions, reviews, and reactions from News API and YouTube around Paramount releases, processes them through sentiment analysis, and displays results on a live React dashboard.
 
 ---
 
@@ -27,8 +27,9 @@ Track audience sentiment for Paramount releases in real time by ingesting social
 
 | Source | Library / API | Status |
 |---|---|---|
-| Reddit | PRAW (Python Reddit API Wrapper) | Ready to use |
+| News API | newsapi.org REST API via httpx | Ready to use |
 | YouTube | YouTube Data API v3 | Ready to use |
+| Reddit | — | Skipped (datacenter IPs blocked by Reddit) |
 | X/Twitter | — | Skipped (API is paywalled) |
 
 ---
@@ -36,15 +37,17 @@ Track audience sentiment for Paramount releases in real time by ingesting social
 ## Architecture
 
 ```
-Reddit (PRAW) ──┐
+News API ──────┐
                 ├──► FastAPI polling workers ──► Redis Streams ──► Sentiment consumer ──► ElasticSearch
 YouTube API ───┘                                                                                │
                                                                                                 ▼
                                                                 React Dashboard ◄── WebSocket (FastAPI)
+                                                                        │
+                                                                TMDB API (metadata panel)
 ```
 
 **Flow:**
-1. FastAPI background workers poll Reddit/YouTube on a schedule
+1. FastAPI background workers poll News API/YouTube on a schedule
 2. Raw posts/comments are pushed into Redis Streams as events
 3. A consumer reads the stream, runs HuggingFace sentiment scoring
 4. Tagged results are written to ElasticSearch
@@ -74,7 +77,7 @@ result = sentiment("This movie was incredible!")
   - [✅] 1.3 Bare FastAPI app running in Docker
 
 - **Phase 2 — Data Ingestion**
-  - [✅] 2.1 Reddit poller via Direct HTTP request (fetch posts/comments, print to console)
+  - [✅] 2.1 News API poller via newsapi.org REST API (fetch articles per release, print to console)
   - [✅] 2.2 YouTube poller via Data API (fetch comments/search results, print to console)
   - [✅] 2.3 Normalize both sources into a shared event schema
 
@@ -112,8 +115,16 @@ result = sentiment("This movie was incredible!")
   - [✅] 8.5 Install Nginx + configure reverse proxy (`api.paramountpulse.fyi` → port 8000)
   - [✅] 8.6 SSL certificate via Certbot / Let's Encrypt for `api.paramountpulse.fyi`
   - [✅] 8.7 Update frontend API URLs from `localhost:8000` to `api.paramountpulse.fyi`
-  - [ ] 8.8 Build React app (`npm run build`) and deploy to GitHub Pages at `paramountpulse.fyi`
-  - [ ] 8.9 Update CORS on FastAPI to allow `paramountpulse.fyi`
+  - [✅] 8.8 Build React app (`npm run build`) and deploy to GitHub Pages at `paramountpulse.fyi`
+  - [✅] 8.9 Update CORS on FastAPI to allow `paramountpulse.fyi`
+
+- **Phase 9 — TMDB Metadata Panel + News API**
+  - [ ] 9.1 Add `NEWSAPI_KEY` to `.env` and wire News API poller into FastAPI lifespan
+  - [ ] 9.2 Add "News" as a source option in frontend dropdown
+  - [ ] 9.3 Add `/tmdb` endpoint to FastAPI (proxies TMDB API, keeps key server-side)
+  - [ ] 9.4 Build `TMDBPanel` React component (poster, title, overview, release date, rating)
+  - [ ] 9.5 Mount `TMDBPanel` in Dashboard below sentiment breakdown, updates on release change
+  - [ ] 9.6 Deploy updated backend + frontend to production
 
 ## Project Structure
 
@@ -148,7 +159,9 @@ paramount-sentiment-dashboard/
 |---|---|
 | Redis Streams over Kafka | Simpler setup; same mental model means easy future swap |
 | Redis Streams over APScheduler/asyncio.Queue | Persistent, closer to Kafka paradigm |
-| Skip X/Twitter | API is paywalled; Reddit + YouTube cover enough signal |
+| Skip X/Twitter | API is paywalled; News API + YouTube cover enough signal |
+| Replace Reddit with News API | Reddit blocks datacenter IPs (Hetzner); News API works from any server and gives structured article data |
+| TMDB for metadata panel | Free API, instant approval, covers both movies and TV shows, provides posters + ratings |
 | Pre-trained HuggingFace model | No ML experience needed; `cardiffnlp/twitter-roberta-base-sentiment` works well for social text |
 | ElasticSearch for storage | Enables full-text search, time-range queries, and aggregations on sentiment data |
 
