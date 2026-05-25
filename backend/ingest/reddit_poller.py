@@ -61,7 +61,7 @@ async def poll_reddit():
                         await publish_event(client, post)
                         print(f"[REDDIT] {post['release']} | {post['author']} | {post['title'][:80]}")
                 except Exception as e:
-                    print(f"[REDDIT ERROR] {release} / {post['author']}: {e}")
+                    print(f"[REDDIT ERROR] {release} / {subreddit}: {e}")
                 await asyncio.sleep(2)
         print(f"[{datetime.now(timezone.utc)}] Reddit poll complete.")
     except Exception as e:
