@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 import asyncio
-from ingest.reddit_poller import poll_reddit
+from ingest.news_poller import poll_news
 from ingest.youtube_poller import poll_youtube
 from streams.consumer import consume_events
 from websocket.manager import manager
@@ -17,7 +17,7 @@ async def run_poller(poll_fn, interval_seconds: int):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("[TEST] Scheduler is firing jobs!")
-    task1 = asyncio.create_task(run_poller(poll_reddit, 900))
+    task1 = asyncio.create_task(run_poller(poll_news, 10800))
     task2 = asyncio.create_task(run_poller(poll_youtube, 7200))
     task3 = asyncio.create_task(consume_events())
     yield

@@ -119,7 +119,7 @@ result = sentiment("This movie was incredible!")
   - [✅] 8.9 Update CORS on FastAPI to allow `paramountpulse.fyi`
 
 - **Phase 9 — TMDB Metadata Panel + News API**
-  - [ ] 9.1 Add `NEWSAPI_KEY` to `.env` and wire News API poller into FastAPI lifespan
+  - [✅] 9.1 Add `NEWSAPI_KEY` to `.env` and wire News API poller into FastAPI lifespan
   - [ ] 9.2 Add "News" as a source option in frontend dropdown
   - [ ] 9.3 Add `/tmdb` endpoint to FastAPI (proxies TMDB API, keeps key server-side)
   - [ ] 9.4 Build `TMDBPanel` React component (poster, title, overview, release date, rating)
