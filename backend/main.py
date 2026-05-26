@@ -82,32 +82,38 @@ async def get_aggregates(release: str = None, source: str = None, gte: str = Non
     return {b["key"]: b["doc_count"] for b in buckets}
 
 
+TV_SHOWS = {"Dutton Ranch", "Landman", "The Madison"}
+
 @app.get("/tmdb")
 async def get_tmdb(title: str):
     api_key = os.getenv("TMDB_API_KEY")
     if not api_key:
         raise HTTPException(status_code=500, detail="TMDB_API_KEY was not set")
-    
-        ## asynchronous HTTP GET request to the NewsAPI endpoint to fetch articles based on parameters you define, such as keywords or dates.
-    async with httpx.AsyncClient() as client:
-        response = await client.get("https://api.themoviedb.org/3/search/movie", params={"api_key": api_key, "query": title})
-        response.raise_for_status()
-        results = response.json().get("results", [])
 
-        if not results:
+    is_tv = title in TV_SHOWS
+    async with httpx.AsyncClient() as client:
+        if is_tv:
             response = await client.get("https://api.themoviedb.org/3/search/tv", params={"api_key": api_key, "query": title})
             response.raise_for_status()
             results = response.json().get("results", [])
+        else:
+            response = await client.get("https://api.themoviedb.org/3/search/movie", params={"api_key": api_key, "query": title})
+            response.raise_for_status()
+            results = response.json().get("results", [])
+            if not results:
+                response = await client.get("https://api.themoviedb.org/3/search/tv", params={"api_key": api_key, "query": title})
+                response.raise_for_status()
+                results = response.json().get("results", [])
+
         if not results:
             raise HTTPException(status_code=404, detail=f"no TMDB results found for {title}")
         r = results[0]
 
-        return{
-            "title": r.get("title") or r.get("name"),
-            "overview": r.get("overview"), 
-            "poster_path": r.get("poster_path"),
+        return {
+            "title":        r.get("title") or r.get("name"),
+            "overview":     r.get("overview"),
+            "poster_path":  r.get("poster_path"),
             "release_date": r.get("release_date") or r.get("first_air_date"),
-            "rating": r.get("vote_average"),
-            "vote_count": r.get("vote_count"),
-
+            "rating":       r.get("vote_average"),
+            "vote_count":   r.get("vote_count"),
         }

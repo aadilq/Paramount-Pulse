@@ -129,7 +129,7 @@ function Dashboard({ events, connected }) {
             </div>
 
             <div style={{marginTop: '64px'}}>
-               <p style={sectionHeader}>// film details</p>
+               <p style={sectionHeader}>// film/tv show details</p>
                <TMDBPanel release={release}/>
             </div>
         </div>
