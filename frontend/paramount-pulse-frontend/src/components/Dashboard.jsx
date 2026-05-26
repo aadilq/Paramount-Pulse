@@ -17,7 +17,7 @@ const RELEASES = [
 
 const SOURCES = [
     { label: "All Sources", value: "" },
-    { label: "Reddit", value: "reddit" },
+    { label: "News", value: "news" },
     { label: "YouTube", value: "youtube" },
 ]
 
