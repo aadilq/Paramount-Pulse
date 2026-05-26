@@ -120,8 +120,8 @@ result = sentiment("This movie was incredible!")
 
 - **Phase 9 — TMDB Metadata Panel + News API**
   - [✅] 9.1 Add `NEWSAPI_KEY` to `.env` and wire News API poller into FastAPI lifespan
-  - [ ] 9.2 Add "News" as a source option in frontend dropdown
-  - [ ] 9.3 Add `/tmdb` endpoint to FastAPI (proxies TMDB API, keeps key server-side)
+  - [✅] 9.2 Add "News" as a source option in frontend dropdown
+  - [✅] 9.3 Add `/tmdb` endpoint to FastAPI (proxies TMDB API, keeps key server-side)
   - [ ] 9.4 Build `TMDBPanel` React component (poster, title, overview, release date, rating)
   - [ ] 9.5 Mount `TMDBPanel` in Dashboard below sentiment breakdown, updates on release change
   - [ ] 9.6 Deploy updated backend + frontend to production

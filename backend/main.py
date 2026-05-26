@@ -1,4 +1,4 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -8,6 +8,8 @@ from ingest.youtube_poller import poll_youtube
 from streams.consumer import consume_events
 from websocket.manager import manager
 from storage.elastic_client import get_es_client, query_by_release, query_by_source, query_by_time_range
+import httpx
+import os
 
 async def run_poller(poll_fn, interval_seconds: int):
     while True:
@@ -80,3 +82,32 @@ async def get_aggregates(release: str = None, source: str = None, gte: str = Non
     return {b["key"]: b["doc_count"] for b in buckets}
 
 
+@app.get("/tmdb")
+async def get_tmdb(title: str):
+    api_key = os.getenv("TMDB_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="TMDB_API_KEY was not set")
+    
+        ## asynchronous HTTP GET request to the NewsAPI endpoint to fetch articles based on parameters you define, such as keywords or dates.
+    async with httpx.AsyncClient() as client:
+        response = await client.get("https://api.themoviedb.org/3/search/movie", params={"api_key": api_key, "title": title})
+        response.raise_for_status()
+        results = response.json().get("results", [])
+
+        if not results:
+            response = await client.get("https://api.themoviedb.org/3/search/movie", params={"api_key": api_key, "title": title})
+            response.raise_for_status()
+            results = response.json().get("results", [])
+        if not results:
+            raise HTTPException(status_code=404, detail=f"no TMDB results found for {title}")
+        r = results[0]
+
+        return{
+            "title": r.get("title") or r.get("name"),
+            "overview": r.get("overview"), 
+            "poster_path": r.get("poster_path"),
+            "release_date": r.get("release_date"),
+            "rating": r.get("rating"),
+            "vote_count": r.get("vote_average"),
+
+        }
