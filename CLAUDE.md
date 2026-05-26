@@ -124,7 +124,7 @@ result = sentiment("This movie was incredible!")
   - [✅] 9.3 Add `/tmdb` endpoint to FastAPI (proxies TMDB API, keeps key server-side)
   - [✅] 9.4 Build `TMDBPanel` React component (poster, title, overview, release date, rating)
   - [✅] 9.5 Mount `TMDBPanel` in Dashboard below sentiment breakdown, updates on release change
-  - [ ] 9.6 Deploy updated backend + frontend to production
+  - [✅] 9.6 Deploy updated backend + frontend to production
 
 ## Project Structure
 
