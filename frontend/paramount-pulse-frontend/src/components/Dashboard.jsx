@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import SentimentBars from "./SentimentBars"
 import LiveFeed from "./LiveFeed"
+import TMDBPanel from "./TMDBPanel"
 
 const RELEASES = [
     "Mission: Impossible - The Final Reckoning",
@@ -125,6 +126,11 @@ function Dashboard({ events, connected }) {
             <div>
                 <p style={sectionHeader}>// live feed</p>
                 <LiveFeed events={feedEvents} />
+            </div>
+
+            <div style={{marginTop: '64px'}}>
+               <p style={sectionHeader}>// film details</p>
+               <TMDBPanel release={release}/>
             </div>
         </div>
     )

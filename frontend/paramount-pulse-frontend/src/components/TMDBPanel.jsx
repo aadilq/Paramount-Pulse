@@ -14,11 +14,11 @@ function TMDBPanel({release}) {
     return(
         <div>
             {data.poster_path &&(
-                <img src={`ttps://image.tmdb.org/t/p/w300${data.poster_path}`} alt={data.title} />
+                <img src={`https://image.tmdb.org/t/p/w300${data.poster_path}`} alt={data.title} />
             )}
             <h2>{data.title}</h2>
             <p>{data.release_date}</p>
-            <p>⭐ {data.rating?.toFixed(1)} ({data.vote_count?.toLocaleString()}votes)</p>
+            <p>⭐ {data.rating?.toFixed(1)} ({data.vote_count?.toLocaleString()} votes)</p>
             <p>{data.overview}</p>
         </div>
     )
