@@ -90,12 +90,12 @@ async def get_tmdb(title: str):
     
         ## asynchronous HTTP GET request to the NewsAPI endpoint to fetch articles based on parameters you define, such as keywords or dates.
     async with httpx.AsyncClient() as client:
-        response = await client.get("https://api.themoviedb.org/3/search/movie", params={"api_key": api_key, "title": title})
+        response = await client.get("https://api.themoviedb.org/3/search/movie", params={"api_key": api_key, "query": title})
         response.raise_for_status()
         results = response.json().get("results", [])
 
         if not results:
-            response = await client.get("https://api.themoviedb.org/3/search/movie", params={"api_key": api_key, "title": title})
+            response = await client.get("https://api.themoviedb.org/3/search/tv", params={"api_key": api_key, "query": title})
             response.raise_for_status()
             results = response.json().get("results", [])
         if not results:
@@ -106,8 +106,8 @@ async def get_tmdb(title: str):
             "title": r.get("title") or r.get("name"),
             "overview": r.get("overview"), 
             "poster_path": r.get("poster_path"),
-            "release_date": r.get("release_date"),
-            "rating": r.get("rating"),
-            "vote_count": r.get("vote_average"),
+            "release_date": r.get("release_date") or r.get("first_air_date"),
+            "rating": r.get("vote_average"),
+            "vote_count": r.get("vote_count"),
 
         }
