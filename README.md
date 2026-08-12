@@ -10,6 +10,14 @@ The main project directory is split into two folders, backend and frontend. the 
 
 We also set up a docker compose file that defines each service as a container with its own build context (Redis and ElasticSearch being the exception because they use pre-built images). Docker compose also has a built-in name server. It puts all of the containers on the same network and lets them find each other by their service name. 
 
+### 1.2
+
+We run Redis and ElasticSearch as pre-built container images.
+
+For Redis, we pull the offical redis:7.2 image from docker hub and initialize a healthcheck to ask Redis if it is working fine. If Redis answers back in a good way, Docker marks the container as healthy. We use the Redis command line interface to send a 'ping' to the redis server. If the server is working, it reply back with 'pong'. We run this check every 10s, waiting 5s for a reply back, doing it for 5 times. 
+
+Same thing for ElasticSearch, we pull the official elasticsearch:8.13.0 image from docker hub and initialize a healthcheck. Every few seconds, docker will run a silent internal curl command curl to ask Elasticsearch: "Are you ready yet?". It specifically hits the built-in URL: http://localhost:9200/_cluster/health. We use grep to search for either "status: green" or "status: yellow", which means that the data is safe and searchable. 
+
 ## Tech Stack
 
 **Tech Stack:** FastAPI, Redis Streams, ElasticSearch, HuggingFace, React
