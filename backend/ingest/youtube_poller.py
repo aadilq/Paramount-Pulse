@@ -5,17 +5,17 @@ import os
 from streams.redis_client import get_redis_client, publish_event
 
 RELEASES = [
-    "Mission: Impossible - The Final Reckoning",
+    "By Any Means",
+    "Heart of the Beast",
     "Street Fighter",
-    "Dutton Ranch",
-    "Transformers One",
-    "Top Gun Maverick",
-    "Landman",
-    "Gladiator II",
-    "The Madison",
-    "Roofman",
-    "The Running Man",
-  ]
+    "Ebenezer",
+    "Mr. Irrelevant: The John Tuggle Story",
+    "Children of Blood and Bone",
+    "The Rescue",
+    "K-Pop: The Debut",
+    "Sonic The Hedgehog 4",
+    "Mission Impossible: The Final Reckoning",
+]
 
 
 def fetch_videos(query: str, api_key: str) -> list[dict]:

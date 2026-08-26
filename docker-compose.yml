@@ -1,9 +1,9 @@
 services:
-    fastapi:
-        build: ./backend
-        container_name: my-fastapi
+    fastapi: ## service for the backend
+        build: ./backend ## path to the backend folder containing our Dockerfile
+        container_name: my-fastapi ## specify that the name of our container is my-fastapi
         ports:
-          - "8000:8000"
+          - "8000:8000" ## connects traffic from port 8000 on your physical machine (the host) to port 8000 inside your container
         env_file:
           - .env
         restart: unless-stopped

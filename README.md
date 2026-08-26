@@ -18,6 +18,49 @@ For Redis, we pull the offical redis:7.2 image from docker hub and initialize a 
 
 Same thing for ElasticSearch, we pull the official elasticsearch:8.13.0 image from docker hub and initialize a healthcheck. Every few seconds, docker will run a silent internal curl command curl to ask Elasticsearch: "Are you ready yet?". It specifically hits the built-in URL: http://localhost:9200/_cluster/health. We use grep to search for either "status: green" or "status: yellow", which means that the data is safe and searchable. 
 
+## Phase 1 - Project Foundation
+
+### 2.1
+
+The first poller that we set up for data ingestion is for the News API (API designed for searching and retrieving live articles from all over the web)
+
+---------------------------------------------
+
+```fetch_articles```
+
+We first set up an asynchronous function `fetch_articles` that handles getting the data from News API. It takes in a query (this case is a Paramount release) and api key. With that we set up the parameters to specify the specific data we're trying to get back. 
+
+
+Then, we initialize a HTTP GET request to the NewsAPI endpoint to fetch all articles based on parameters that we had defined above, the most important parameters being the actual query itself and api key. 
+
+We convert the `response` that got back into a useable dictionary so that we can easily work with it and access the data inside. 
+
+We initialize an empty list and go through each article in our data. To the list, we append various information about each article, such as the title, text, author, etc. 
+
+---------------------------------------------
+
+```poll_news```
+
+The second function that we set up is going to fetch all of the article information for each release. We establish a connection to the redis client, go through each release in RELEASES, call the fetch_articles function passing in the release and api_key. with each article that we get back, quickly write to the stream.
+
+### 2.2
+
+The second poller that we set up for data ingestion is for the Youtube API, finding videos, channels, or playlists matching specific keywords.
+
+---------------------------------------------
+
+```fetch_videos```
+
+The helper function ```fetch_videos``` takes in a query and api_key, connecting our script to Youtube (A Google Service). We then query YouTube's database to return a list of videos matching our specific search parameters. we go through each video that we got back in our response, capturing information such as the video id, title, text. 
+
+---------------------------------------------
+
+```poll_youtube```
+
+                videos = await asyncio.to_thread(fetch_videos, release, api_key)
+the function ```poll_youtube``` retrieves our youtube api_key and opens a connection to Redis. After that, it goes through each release in releases, runs our function ```fetch_videos``` in a separate background thread so that our main program does not freeze. once we get back the list of video, we write to stream using another helper function ```publish_event```
+
+
 ## Tech Stack
 
 **Tech Stack:** FastAPI, Redis Streams, ElasticSearch, HuggingFace, React
