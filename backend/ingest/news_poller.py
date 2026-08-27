@@ -3,6 +3,7 @@ import asyncio
 import hashlib
 from datetime import datetime, timezone
 from streams.redis_client import get_redis_client, publish_event
+from ingest.review_filter import build_review_query, is_relevant_review
 import os
 
 
@@ -21,11 +22,11 @@ RELEASES = [
 
 async def fetch_articles(query: str, api_key: str) -> list[dict]:
     params = {
-        "q": f'"{query}"',
+        "q": build_review_query(query),
         "apiKey": api_key,
-        "language": "en", 
-        "sortBy": "publishedAt",
-        "pageSize": 10,
+        "language": "en",
+        "sortBy": "relevancy",
+        "pageSize": 30,
     }
     ## asynchronous HTTP GET request to the NewsAPI endpoint to fetch articles based on parameters you define, such as keywords or dates.
     async with httpx.AsyncClient() as client:
@@ -44,6 +45,9 @@ async def fetch_articles(query: str, api_key: str) -> list[dict]:
             title = article.get("title") or ""
             if not title or title == "[Removed]":
                 continue
+            text = f"{article.get('description') or ''} {article.get('content') or ''}".strip() or title
+            if not is_relevant_review(query, title, text):
+                continue
             ## generates a unique 16-character hexadecimal string from the article url
             article_id = hashlib.md5(article["url"].encode()).hexdigest()[:16]
             articles.append({
@@ -51,7 +55,7 @@ async def fetch_articles(query: str, api_key: str) -> list[dict]:
                 "source": "news",
                 "release": query,
                 "title": title,
-                "text": article.get("description") or article.get("content") or title,
+                "text": text,
                 "author": article.get("source", {}).get("name", "Unknown"),
                 "url": article["url"],
                 "timestamp": article["publishedAt"],

@@ -4,16 +4,16 @@ import LiveFeed from "./LiveFeed"
 import TMDBPanel from "./TMDBPanel"
 
 const RELEASES = [
-    "Mission: Impossible - The Final Reckoning",
+    "By Any Means",
+    "Heart of the Beast",
     "Street Fighter",
-    "Dutton Ranch",
-    "Transformers One",
-    "Top Gun Maverick",
-    "Landman",
-    "Gladiator II",
-    "The Madison",
-    "Roofman",
-    "The Running Man",
+    "Ebenezer",
+    "Mr. Irrelevant: The John Tuggle Story",
+    "Children of Blood and Bone",
+    "The Rescue",
+    "K-Pop: The Debut",
+    "Sonic The Hedgehog 4",
+    "Mission Impossible: The Final Reckoning",
 ]
 
 const SOURCES = [
