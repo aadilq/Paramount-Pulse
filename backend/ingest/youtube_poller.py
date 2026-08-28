@@ -3,7 +3,6 @@ from datetime import datetime, timezone
 from googleapiclient.discovery import build
 import os
 from streams.redis_client import get_redis_client, publish_event
-from ingest.review_filter import is_relevant_review
 
 RELEASES = [
     "By Any Means",
@@ -22,7 +21,7 @@ RELEASES = [
 def fetch_videos(query: str, api_key: str) -> list[dict]:
     youtube = build("youtube", "v3", developerKey=api_key)
     response = youtube.search().list(
-        q=f"{query} review reaction",
+        q=query,
         part="snippet",
         type="video",
         order="date",
@@ -33,16 +32,12 @@ def fetch_videos(query: str, api_key: str) -> list[dict]:
 
     for item in response.get("items", []):
         snippet = item["snippet"]
-        title = snippet["title"]
-        text = snippet.get("description", "") or title
-        if not is_relevant_review(query, title, text):
-            continue
         videos.append({
             "id": item["id"]["videoId"],
             "source": "youtube",
             "release": query,
-            "title": title,
-            "text": text,
+            "title": snippet["title"],
+            "text": snippet.get("description", "") or snippet["title"],
             "author": snippet["channelTitle"],
             "url": f"https://www.youtube.com/watch?v={item['id']['videoId']}",
             "timestamp": snippet["publishedAt"],
