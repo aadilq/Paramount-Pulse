@@ -12,7 +12,7 @@ function LiveFeed({ events }) {
     }
 
     return (
-        <ul style={{ listStyle: 'none', padding: 0, maxHeight: '480px', overflowY: 'auto' }}>
+        <ul style={{ listStyle: 'none', padding: 0, maxHeight: '260px', overflowY: 'auto' }}>
             {events.map((e, i) => {
                 const color = COLORS[e.sentiment] || '#94a3b8'
                 return (

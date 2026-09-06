@@ -1,7 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
 *, *::before, *::after {
   box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -16,6 +26,39 @@ body {
 #root {
   width: 100%;
   min-height: 100vh;
+}
+
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(241, 245, 249, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  will-change: transform;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  will-change: transform;
 }
 
 h1, h2, h3, p {
@@ -64,4 +107,140 @@ select option {
 
 ::-webkit-scrollbar-thumb {
   background: #1e2d4a;
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.loading-screen-hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-bar-track {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.loading-bar-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: #fff;
+  animation: loading-fill 2s ease-in-out forwards;
+}
+
+.loading-bar-text {
+  position: relative;
+  z-index: 1;
+  color: #000;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+  padding-left: 16px;
+}
+
+@keyframes loading-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.trailer-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.trailer-bg-frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.trailer-bg-frame-active {
+  opacity: 1;
+}
+
+.trailer-bg-frame iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw;
+  min-height: 100vh;
+  min-width: 177.78vh;
+  transform: translate(-50%, -50%) scale(1.6);
+  pointer-events: none;
+  border: 0;
+  filter: brightness(1.25) contrast(1.05) saturate(1.1);
+}
+
+.trailer-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 15, 30, 0.55) 0%, rgba(11, 15, 30, 0.35) 45%, rgba(11, 15, 30, 0.7) 100%);
+}
+
+.trailer-bg-cover {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.trailer-bg-cover-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.hero-content-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.35em;
+}
+
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal-word-visible {
+  opacity: 1;
+  transform: translateX(0);
 }
