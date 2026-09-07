@@ -152,18 +152,18 @@ function App() {
             <MovieCarousel releases={RELEASES} selected={release} onSelect={setRelease} />
           </div>
 
-          <div style={{ marginTop: '40px', width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ marginTop: '40px', marginBottom: '140px', width: '100%', display: 'flex', justifyContent: 'center' }}>
             <SentimentSummary release={release} />
           </div>
         </div>
 
-        <div style={{ position: 'absolute', bottom: '5px', left: '5px', width: '285px', maxWidth: 'calc(100% - 48px)' }}>
+        <div style={{ position: 'absolute', bottom: '24px', left: '5px', width: '300px', maxWidth: 'calc(100% - 48px)' }}>
           <iframe
             title="Spotify playlist"
             style={{ borderRadius: '12px' }}
             src="https://open.spotify.com/embed/playlist/0nIe8cZWhgGD9wExfX4hIV?utm_source=generator&autoplay=1"
             width="100%"
-            height="152"
+            height="80"
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"

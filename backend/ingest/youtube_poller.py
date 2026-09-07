@@ -5,16 +5,16 @@ import os
 from streams.redis_client import get_redis_client, publish_event
 
 RELEASES = [
-    "By Any Means",
-    "Heart of the Beast",
-    "Street Fighter",
-    "Ebenezer",
-    "Mr. Irrelevant: The John Tuggle Story",
-    "Children of Blood and Bone",
-    "The Rescue",
-    "K-Pop: The Debut",
-    "Sonic The Hedgehog 4",
-    "Mission Impossible: The Final Reckoning",
+  "Mission: Impossible - The Final Reckoning",
+  "Street Fighter",
+  "Teenage Mutant Ninja Turtles: Mutant Mayhem",
+  "Transformers One",
+  "Top Gun Maverick",
+  "Novocaine",
+  "Gladiator II",
+  "A Quiet Place: Day One",
+  "Roofman",
+  "The Running Man",
 ]
 
 
