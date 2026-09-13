@@ -5,16 +5,16 @@ import os
 from streams.redis_client import get_redis_client, publish_event
 
 RELEASES = [
-  "Mission: Impossible - The Final Reckoning",
+  "Heart of the Beast",
+  "Ebenezer",
+  "Mr. Irrelevant: The John Tuggle Story",
   "Street Fighter",
+  "Mission: Impossible - The Final Reckoning",
   "Teenage Mutant Ninja Turtles: Mutant Mayhem",
   "Transformers One",
   "Top Gun Maverick",
-  "Novocaine",
   "Gladiator II",
   "A Quiet Place: Day One",
-  "Roofman",
-  "The Running Man",
 ]
 
 

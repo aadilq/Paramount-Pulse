@@ -4,9 +4,9 @@ export const POSTERS = {
     "Teenage Mutant Ninja Turtles: Mutant Mayhem": "/posters/tnmt.jpg",
     "Transformers One": "/posters/transformers-one.jpg",
     "Top Gun Maverick": "/posters/top-gun-maverick.jpg",
-    "Novocaine": "/posters/novocaine.jpg",
+    "Heart of the Beast": "/posters/heartofthebeast.jpg",
     "Gladiator II": "/posters/gladiator-ii.jpg",
     "A Quiet Place: Day One": "/posters/quiet-place.jpg",
-    "Roofman": "/posters/roofman.jpg",
-    "The Running Man": "/posters/the-running-man.jpg",
+    "Ebenezer": "/posters/ebenezer.jpg",
+    "Mr. Irrelevant": "/posters/mrirrelevant.jpg",
 }

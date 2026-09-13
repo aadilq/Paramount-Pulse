@@ -10,16 +10,16 @@ import SentimentSummary from "./components/SentimentSummary"
 const FULL_TITLE = "Paramount Pulse"
 
 const RELEASES = [
-  "Mission: Impossible - The Final Reckoning",
+  "Heart of the Beast",
+  "Ebenezer",
+  "Mr. Irrelevant: The John Tuggle Story",
   "Street Fighter",
+  "Mission: Impossible - The Final Reckoning",
   "Teenage Mutant Ninja Turtles: Mutant Mayhem",
   "Transformers One",
   "Top Gun Maverick",
-  "Novocaine",
   "Gladiator II",
   "A Quiet Place: Day One",
-  "Roofman",
-  "The Running Man",
 ]
 
 function App() {
@@ -115,7 +115,7 @@ function App() {
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '900px', marginTop: '100px' }}>
           <RevealText
-            text="Select a Paramount release below and see a live summary of reviews coming in from various news articles and YouTube."
+            text="Select a Paramount release below and see a live LLM generated summary of reviews coming in from various news articles and YouTube."
             style={{
               fontFamily: "'Titillium Web', sans-serif",
               fontSize: 'clamp(18px, 3vw, 28px)',
