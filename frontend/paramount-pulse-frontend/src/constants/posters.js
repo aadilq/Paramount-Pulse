@@ -8,5 +8,5 @@ export const POSTERS = {
     "Gladiator II": "/posters/gladiator-ii.jpg",
     "A Quiet Place: Day One": "/posters/quiet-place.jpg",
     "Ebenezer": "/posters/ebenezer.jpg",
-    "Mr. Irrelevant": "/posters/mrirrelevant.jpg",
+    "Mr. Irrelevant: The John Tuggle Story": "/posters/mrirrelevant.jpg",
 }
